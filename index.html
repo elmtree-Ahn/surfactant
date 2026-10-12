@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>계면활성제 탐험 | 어게인 실험과학 수학학원</title>
+<meta name="description" content="손으로 만지며 알아보는 계면활성제 탐험 놀이">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fffaf0; --sky:#e3f4fd; --sky2:#bfe4fb; --blue:#3a9ae0; --blue-d:#2476b8;
+  --mint:#c9f0df; --mint2:#7fd6b0; --mint-d:#3fae80; --sand:#fff1c2; --sand2:#ffd666; --sand-d:#e0b52e;
+  --ink:#33414f; --sub:#6c7a8a; --line:#e6dcc4; --ok:#2fb36b; --coral:#ff8a7a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-weight:500}
+body{min-height:100vh;display:flex;flex-direction:column;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+.bbtn{font-family:"Jua",sans-serif;font-size:22px;min-height:62px;min-width:150px;padding:10px 28px;color:#fff;background:var(--blue);border-radius:999px;
+  box-shadow:inset 0 -6px 0 rgba(0,0,0,.12),0 5px 0 var(--blue-d);word-break:keep-all}
+.bbtn:active{transform:translateY(3px)}
+.bbtn:disabled{opacity:.35;cursor:default}
+.bbtn.sand{background:var(--sand2);color:#5a4300;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08),0 5px 0 var(--sand-d)}
+.bbtn.mint{background:var(--mint-d);box-shadow:inset 0 -6px 0 rgba(0,0,0,.1),0 5px 0 #2a8a62}
+.bbtn.pulse{animation:pulse 1.2s infinite}
+
+header{position:sticky;top:0;z-index:30;background:#fff;box-shadow:0 3px 0 var(--line);padding:10px 16px}
+.head-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;flex:none}
+.titles{flex:1;min-width:0}
+.titles .brand{font-family:"Jua",sans-serif;font-size:15px;color:var(--sub)}
+.titles h1{margin:0;font-family:"Jua",sans-serif;font-weight:400;font-size:clamp(24px,4vw,34px);color:var(--blue);line-height:1.1}
+.share{min-width:0;font-size:19px;min-height:56px;padding:8px 22px;display:flex;align-items:center;gap:6px}
+
+nav{max-width:1100px;width:100%;margin:14px auto 0;padding:0 16px;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.tab{position:relative;min-height:64px;border-radius:20px;background:#fff;font-family:"Jua",sans-serif;font-size:clamp(14px,1.8vw,18px);line-height:1.2;padding:6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:3px solid transparent;box-shadow:0 3px 0 var(--line);word-break:keep-all;text-align:center}
+.tab .n{width:24px;height:24px;border-radius:50%;background:var(--sky2);color:var(--blue-d);font-size:14px;display:grid;place-items:center}
+.tab.on{background:var(--sand);border-color:var(--sand2)}
+.tab.on .n{background:var(--sand2);color:#5a4300}
+.tab .star{position:absolute;top:-10px;right:-4px;font-size:22px;display:none}
+.tab.done .star{display:block;animation:pop .5s}
+
+main{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:16px}
+.panel{display:none;animation:fadein .3s}
+.panel.on{display:block}
+
+.coach{display:flex;align-items:flex-end;gap:10px;margin:4px 0 12px}
+.coach svg{width:74px;height:84px;flex:none;animation:float 2.4s ease-in-out infinite}
+.bubble{position:relative;flex:1;background:#fff;border:3px solid var(--sky2);border-radius:22px;padding:12px 18px;font-family:"Jua",sans-serif;
+  font-size:clamp(18px,2.4vw,24px);line-height:1.4;word-break:keep-all;min-height:58px}
+.bubble::before{content:"";position:absolute;left:-14px;bottom:16px;border:10px solid transparent;border-right:14px solid var(--sky2);border-left:0}
+.bubble.new{animation:pop .4s}
+
+.card{display:none;margin:16px auto 0;max-width:860px;border-radius:24px;background:var(--mint);border:4px solid var(--mint2);padding:16px 20px;
+  font-family:"Jua",sans-serif;font-size:clamp(20px,2.8vw,27px);text-align:center;line-height:1.45;color:#1f6b4b;word-break:keep-all}
+.card.on{display:block;animation:pop .5s}
+.card .big{font-size:1.25em}
+
+.stage{position:relative;width:100%;border-radius:28px;overflow:hidden;touch-action:none;box-shadow:0 6px 0 var(--line);background:var(--sky)}
+.stage>svg{display:block;width:100%;height:auto}
+.row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.counter{position:absolute;left:2.5%;top:4%;font-family:"Jua",sans-serif;font-size:clamp(18px,3vw,32px);background:#fff;border-radius:18px;padding:6px 16px;box-shadow:0 3px 0 var(--line);z-index:4}
+.counter b{color:var(--blue);font-weight:400;font-size:1.25em}
+.hint{position:absolute;font-family:"Jua",sans-serif;font-size:clamp(14px,2.1vw,21px);color:#a36000;background:var(--sand);border:2px solid var(--sand2);border-radius:999px;padding:4px 14px;
+  animation:bob 1s infinite;z-index:5;white-space:nowrap;pointer-events:none;transform:translateX(-50%)}
+.hint[hidden]{display:none}
+.records{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.rec{font-family:"Jua",sans-serif;font-size:clamp(18px,2.4vw,24px);background:#fff;border-radius:22px;padding:10px 20px;box-shadow:0 3px 0 var(--line);animation:pop .4s;text-align:center;min-width:180px}
+.rec b{display:block;color:var(--blue);font-weight:400;font-size:1.5em}
+.rec.slow b{color:#e0763a}
+.tap{cursor:pointer}
+
+
+.stage>canvas{display:block;width:100%;height:auto}
+.tool{min-height:72px;padding:8px 22px;border-radius:24px;background:#fff;border:4px solid var(--line);font-family:"Jua",sans-serif;font-size:clamp(18px,2.4vw,23px);
+  display:flex;align-items:center;gap:10px;box-shadow:0 4px 0 var(--line)}
+.tool i{width:34px;height:34px;border-radius:50%;flex:none}
+.tool i.sw{background:#9be8a8;border:4px solid #fff;outline:3px solid #d9d2c0}
+.tool.on{border-color:var(--blue);background:var(--sky)}
+
+/* 6. 퀴즈 */
+.quiz{display:grid;gap:18px}
+.qbox{background:#fff;border-radius:26px;padding:18px;box-shadow:0 5px 0 var(--line)}
+.qbox h3{margin:0 0 12px;font-family:"Jua",sans-serif;font-weight:400;font-size:clamp(20px,2.8vw,27px);word-break:keep-all;display:flex;gap:10px;align-items:flex-start}
+.qbox h3 .qn{flex:none;width:38px;height:38px;border-radius:50%;background:var(--sky2);color:var(--blue-d);display:grid;place-items:center;font-size:20px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.opts.two{grid-template-columns:repeat(2,1fr)}
+.opt{min-height:76px;border-radius:20px;background:var(--sky);border:4px solid var(--sky2);font-family:"Jua",sans-serif;font-size:clamp(18px,2.5vw,24px);padding:8px;word-break:keep-all}
+.opt.right{background:var(--mint);border-color:var(--mint-d);color:#1f6b4b;animation:pop .45s}
+.opt.wrong{animation:shake .4s;background:#ffe9e4;border-color:#ffb3a6}
+.qbox.solved .opt:not(.right){opacity:.4}
+.qfb{min-height:30px;margin-top:10px;font-family:"Jua",sans-serif;font-size:20px;text-align:center;color:var(--sub)}
+.qfb.good{color:var(--mint-d)}
+
+footer{margin-top:28px;background:var(--blue-d);color:#fff;text-align:center;padding:20px 16px 26px}
+footer .brand{font-family:"Jua",sans-serif;font-size:22px}
+footer .tel{margin-top:4px;font-size:18px}
+
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,40px);opacity:0;background:var(--ink);color:#fff;font-family:"Jua",sans-serif;font-size:20px;padding:14px 26px;border-radius:999px;z-index:70;transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+.fly{position:fixed;top:-160px;width:80px;z-index:58;pointer-events:none;animation:drop linear forwards}
+.fly svg{display:block;animation:sway 1.4s ease-in-out infinite;transform-origin:50% 0}
+
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes bob{50%{margin-top:-6px}}
+@keyframes float{50%{transform:translateY(-6px) rotate(2deg)}}
+@keyframes pulse{50%{transform:scale(1.06)}}
+@keyframes wind{0%{opacity:0;stroke-dashoffset:70}20%{opacity:1}100%{opacity:0;stroke-dashoffset:-430}}
+@keyframes flutter{0%,100%{transform:rotate(0)}30%{transform:rotate(14deg) skewY(-6deg)}70%{transform:rotate(-8deg)}}
+@keyframes lift{0%,100%{transform:rotate(0)}50%{transform:rotate(-18deg)}}
+@keyframes wave{0%,100%{transform:rotate(0)}30%{transform:rotate(-28deg)}70%{transform:rotate(22deg)}}
+@keyframes flowmove{to{stroke-dashoffset:-60}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes wob{from{transform:translateY(-7px)}to{transform:translateY(7px)}}
+@keyframes drop{to{transform:translate(var(--dx),calc(100vh + 200px))}}
+@keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+
+@media (max-width:760px){
+  nav{grid-template-columns:repeat(3,1fr);gap:6px}
+  .tab{font-size:14px;min-height:58px;border-radius:14px}
+  .share{padding:8px 14px;font-size:16px;min-height:50px}
+  .titles .brand{font-size:13px}
+  .coach svg{width:56px;height:64px}
+  .opts{grid-template-columns:1fr}
+  .cars{gap:6px}
+  .carbtn{min-height:100px;padding:6px 4px}
+  .slider{padding:8px 14px;gap:8px;font-size:18px}
+  .rec{min-width:140px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+@media (max-width:760px){.tool{min-height:60px;padding:6px 14px}.tool i{width:26px;height:26px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-in">
+    <svg class="logo" viewBox="0 0 120 130" aria-hidden="true"><use href="#bub-char"/></svg>
+    <div class="titles">
+      <div class="brand">어게인 실험과학 수학학원</div>
+      <h1>계면활성제 탐험</h1>
+    </div>
+    <button class="bbtn sand share" id="share" aria-label="공유하기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5a4300" stroke-width="2.6" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      <span>공유하기</span>
+    </button>
+  </div>
+</header>
+
+<!-- 길잡이 비눗방울 '뽀글이' -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="bub-char">
+      <circle cx="60" cy="72" r="48" fill="#d6f0ff" stroke="#7cc4ee" stroke-width="4"/>
+      <path d="M28 54 Q36 34 56 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="45" cy="70" r="5.5" fill="#33414f"/><circle cx="75" cy="70" r="5.5" fill="#33414f"/>
+      <circle cx="46.8" cy="68" r="1.8" fill="#fff"/><circle cx="76.8" cy="68" r="1.8" fill="#fff"/>
+      <path d="M50 84 Q60 94 70 84" stroke="#33414f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="34" cy="82" r="6" fill="#ff8a7a" opacity=".5"/><circle cx="86" cy="82" r="6" fill="#ff8a7a" opacity=".5"/>
+      <circle cx="102" cy="18" r="10" fill="#c9f0df" stroke="#7fd6b0" stroke-width="3"/>
+      <circle cx="16" cy="16" r="6" fill="#fff1c2" stroke="#ffd666" stroke-width="3"/>
+    </g>
+  </defs>
+</svg>
+
+<nav id="tabs">
+  <button class="tab on"><span class="n">1</span>물과 기름 섞기<span class="star">⭐</span></button>
+  <button class="tab"><span class="n">2</span>계면활성제 만나기<span class="star">⭐</span></button>
+  <button class="tab"><span class="n">3</span>기름때 씻기<span class="star">⭐</span></button>
+  <button class="tab"><span class="n">4</span>도망가는 후추<span class="star">⭐</span></button>
+  <button class="tab"><span class="n">5</span>우유 마블링<span class="star">⭐</span></button>
+  <button class="tab"><span class="n">6</span>계면활성제 퀴즈<span class="star">⭐</span></button>
+</nav>
+
+<main>
+<!-- 1. 물과 기름 섞기 -->
+<section class="panel on" id="p1">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b1">안녕! 나는 비눗방울 뽀글이예요.<br><b>식용유 병</b>을 끌어서 물컵 위로 가져가 보세요!</div></div>
+  <div class="stage"><canvas id="v1"></canvas></div>
+  <div class="card" id="c1"><span class="big">물과 기름은 섞이지 않아요!</span><br>흔들면 잠깐 섞인 것 같지만, 다시 두 층으로 나뉘어요.</div>
+</section>
+
+<!-- 2. 계면활성제 만나기 -->
+<section class="panel" id="p2">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b2">이 친구가 <b>계면활성제</b>예요!<br>동그란 <b>머리</b>와 기다란 <b>꼬리</b>를 톡톡 눌러 보세요.</div></div>
+  <div class="stage"><canvas id="v2"></canvas></div>
+  <div class="card" id="c2"><span class="big">계면활성제는 물과 기름을 이어 줘요!</span><br>머리는 물 쪽으로, 꼬리는 기름 쪽으로 쏙!</div>
+</section>
+
+<!-- 3. 기름때 씻기 -->
+<section class="panel" id="p3">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b3">손에 끈적끈적 <b>기름때</b>가 묻었어요!<br>먼저 <b>물로만</b> 씻어 볼까요?</div></div>
+  <div class="stage"><canvas id="v3"></canvas></div>
+  <div class="row"><button class="bbtn pulse" id="w3">물로만 씻기</button></div>
+  <div class="card" id="c3"><span class="big">계면활성제가 기름때를 감싸서 물에 씻어 내요!</span><br>그래서 손은 비누로 오래오래 문질러 씻어요.</div>
+</section>
+
+<!-- 4. 도망가는 후추 -->
+<section class="panel" id="p4">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b4">물 위에 까만 <b>후추</b>가 동동 떠 있어요.<br>먼저 <b>그냥 면봉</b>을 가운데에 대 볼까요?</div></div>
+  <div class="stage"><canvas id="v4"></canvas></div>
+  <div class="row"><button class="bbtn pulse" id="n4">그냥 면봉을 물에 대기</button></div>
+  <div class="card" id="c4"><span class="big">세제가 물 표면이 당기는 힘을 약하게 해서 후추가 바깥쪽으로 끌려가요!</span></div>
+</section>
+
+<!-- 5. 우유 마블링 -->
+<section class="panel" id="p5">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b5">하얀 우유 접시예요. <b>색깔</b>을 고르고 우유를 톡톡 눌러<br>물감을 떨어뜨려 보세요!</div></div>
+  <div class="row" id="tools5" style="margin:0 0 14px">
+    <button class="tool on" data-t="r"><i style="background:#ff4d6d"></i>빨강</button>
+    <button class="tool" data-t="b"><i style="background:#3a8fe8"></i>파랑</button>
+    <button class="tool" data-t="y"><i style="background:#ffcf33"></i>노랑</button>
+    <button class="tool" data-t="s"><i class="sw"></i>세제 면봉</button>
+  </div>
+  <div class="stage"><canvas id="v5"></canvas></div>
+  <div class="row"><button class="bbtn sand" id="shot5">사진 찍기</button><button class="bbtn mint" id="new5">새로 하기</button></div>
+  <div class="card" id="c5"><span class="big">찰칵! 나만의 작품이 완성됐어요!</span><br>세제가 닿으면 색깔이 빙글빙글 퍼져 나가요.</div>
+</section>
+
+<!-- 6. 퀴즈 -->
+<section class="panel" id="p6">
+  <div class="coach"><svg viewBox="0 0 120 130"><use href="#bub-char"/></svg><div class="bubble" id="b6">이제 퀴즈 시간이에요! 정답을 톡 눌러 보세요.</div></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="card" id="c6"><span class="big">와, 계면활성제 박사가 되었어요!</span><br>오늘 배운 것을 집에서 가족에게도 알려 주세요.</div>
+</section>
+</main>
+
+<footer>
+  <div class="brand">어게인 실험과학 수학학원</div>
+  <div class="tel">교육문의 010.2976.5774</div>
+</footer>
+<div class="toast" id="toast"></div>
+<canvas id="fx"></canvas>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const rand = (a, b) => a + Math.random() * (b - a);
+const ease = { in: t => t * t, out: t => 1 - (1 - t) * (1 - t), io: t => t < .5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t) };
+
+/* ---------- 소리 ---------- */
+let ac;
+const audio = () => ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+function tone(f, d = .15, type = 'sine', at = 0, v = .18, f2) {
+  try {
+    const a = audio(), t = a.currentTime + at, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+    g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + d);
+    o.connect(g).connect(a.destination); o.start(t); o.stop(t + d);
+  } catch (e) {}
+}
+function noise(d, freq, v, type = 'lowpass') {
+  try {
+    const a = audio(), n = a.sampleRate * d, b = a.createBuffer(1, n, a.sampleRate), ch = b.getChannelData(0);
+    for (let i = 0; i < n; i++) ch[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / n);
+    const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+    f.type = type; f.frequency.value = freq; g.gain.value = v;
+    s.buffer = b; s.connect(f).connect(g).connect(a.destination); s.start();
+  } catch (e) {}
+}
+const sfx = {
+  pop: () => { tone(520, .09, 'triangle'); tone(780, .1, 'triangle', .06); },
+  good: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .25, 'triangle', i * .09)),
+  win: () => [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, .3, 'triangle', i * .1)),
+  bad: () => { tone(300, .18, 'triangle', 0, .12); tone(220, .28, 'triangle', .15, .12); },
+  whoosh: () => noise(.5, 700, .5),
+  thud: () => { tone(120, .18, 'sine', 0, .3, 60); noise(.12, 400, .3); },
+  tick: () => tone(1200, .05, 'square', 0, .04),
+  snap: () => { tone(900, .12, 'square', 0, .08, 300); noise(.08, 3000, .3, 'highpass'); },
+  boing: () => tone(300, .35, 'sine', 0, .2, 700),
+  open: () => { noise(.3, 1500, .4); tone(400, .3, 'triangle', .05, .12, 800); }
+};
+
+/* ---------- 반짝이 · 꽃가루 ---------- */
+const cv = $('#fx'), cx = cv.getContext('2d');
+let parts = [], running = false;
+const COLORS = ['#ffd666', '#3a9ae0', '#ff8a7a', '#7fd6b0', '#b38cf0', '#ff9d5c'];
+function resizeFx() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+addEventListener('resize', resizeFx); resizeFx();
+function sparkle(x, y, n = 22) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * 6.28, sp = rand(3, 8);
+    parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2, r: 0, vr: .2, s: rand(7, 12), c: COLORS[i % 6], life: 50, star: true });
+  }
+  kick();
+}
+function sparkleAt(el) { const r = el.getBoundingClientRect(); sparkle(r.left + r.width / 2, r.top + r.height / 2); }
+function confetti() {
+  for (let i = 0; i < 140; i++) parts.push({ x: rand(0, innerWidth), y: rand(-200, -10), vx: rand(-1.5, 1.5), vy: rand(1, 4), r: rand(0, 6), vr: rand(-.2, .2), s: rand(6, 11), c: COLORS[i % 6], life: 200, star: false });
+  kick();
+}
+function kick() { if (!running) { running = true; requestAnimationFrame(fxLoop); } }
+function fxLoop() {
+  const k = devicePixelRatio; cx.clearRect(0, 0, cv.width, cv.height);
+  parts = parts.filter(p => p.life-- > 0 && p.y < innerHeight + 40);
+  for (const p of parts) {
+    p.vy += p.star ? .14 : .03; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+    cx.save(); cx.translate(p.x * k, p.y * k); cx.rotate(p.r); cx.globalAlpha = Math.min(1, p.life / 20); cx.fillStyle = p.c;
+    if (p.star) { cx.beginPath(); for (let i = 0; i < 10; i++) { const rr = (i % 2 ? p.s / 2.4 : p.s) * k, a = i * Math.PI / 5; cx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } cx.fill(); }
+    else cx.fillRect(-p.s * k / 2, -p.s * k / 4, p.s * k, p.s * k / 2);
+    cx.restore();
+  }
+  if (parts.length) requestAnimationFrame(fxLoop); else { running = false; cx.clearRect(0, 0, cv.width, cv.height); }
+}
+function celebrate() {
+  sfx.win(); confetti();
+  for (let i = 0; i < 7; i++) {
+    const b = document.createElement('div'); b.className = 'fly';
+    b.style.left = rand(3, 90) + 'vw';
+    b.style.setProperty('--dx', rand(-80, 80) + 'px');
+    b.style.animationDuration = rand(4.5, 6.5) + 's'; b.style.animationDelay = rand(0, 1.2) + 's';
+    b.innerHTML = '<svg viewBox="0 0 120 130"><use href="#bub-char"/></svg>';
+    b.addEventListener('animationend', e => e.target === b && b.remove()); document.body.appendChild(b);
+  }
+}
+
+/* ---------- 공통 ---------- */
+function coach(id, html) { const el = $(id); el.classList.remove('new'); void el.offsetWidth; el.classList.add('new'); el.innerHTML = html; }
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 2000); }
+function showCard(id) { const c = $(id); c.classList.remove('on'); void c.offsetWidth; c.classList.add('on'); setTimeout(() => c.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 300); }
+const tabs = $$('.tab'), panels = $$('.panel');
+function finish(i, card) { showCard(card); if (!tabs[i].classList.contains('done')) { tabs[i].classList.add('done'); celebrate(); } else sfx.good(); }
+tabs.forEach((t, i) => t.onclick = () => {
+  tabs.forEach(x => x.classList.toggle('on', x === t));
+  panels.forEach((p, j) => p.classList.toggle('on', j === i));
+  sfx.pop();
+});
+$('#share').onclick = async () => {
+  const url = location.href;
+  if (navigator.share) { try { await navigator.share({ title: '계면활성제 탐험', text: '어게인 실험과학 수학학원 · 계면활성제 탐험 놀이', url }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  try { await navigator.clipboard.writeText(url); }
+  catch (e) { const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast('주소가 복사됐어요');
+};
+function tween(dur, step, done) {
+  const t0 = performance.now();
+  const f = now => { const t = Math.min(1, (now - t0) / dur); step(t, now); if (t < 1) requestAnimationFrame(f); else done && done(); };
+  requestAnimationFrame(f);
+}
+function svgPt(svg, e) { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+function client(svg, x, y) { const p = svg.createSVGPoint(); p.x = x; p.y = y; const q = p.matrixTransform(svg.getScreenCTM()); return [q.x, q.y]; }
+const tf = (el, x, y, s = 1, r = 0) => el.setAttribute('transform', `translate(${x} ${y}) rotate(${r}) scale(${s})`);
+// 초시계: 흐른 시간을 '정수 초'로만 보여 줌
+function clock(el) { const t0 = performance.now(); let last = -1; return () => { const s = Math.floor((performance.now() - t0) / 1000); if (s !== last) { last = s; el.textContent = s; if (s) sfx.tick(); } }; }
+const recHtml = (label, sec, slow) => `<div class="rec${slow ? ' slow' : ''}">${label}<b>${sec}초</b></div>`;
+
+
+Object.assign(sfx, {
+  slosh: () => noise(.2, 500, .25),
+  drip: () => tone(900, .12, 'sine', 0, .15, 400)
+});
+
+/* ---------- 캔버스 공통 ---------- */
+const W = 1600, H = 900, FONT = '"Jua","Noto Sans KR",sans-serif', TAU = Math.PI * 2;
+const lerp = (a, b, t) => a + (b - a) * t;
+const near = dt => Math.min(1, dt * 8);
+function stage(id, h) {
+  const c = $(id), g = c.getContext('2d'); c.width = W; c.height = H;
+  const pt = e => { const r = c.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; };
+  let on = false;
+  c.addEventListener('pointerdown', e => { on = true; try { c.setPointerCapture(e.pointerId); } catch (_) {} h.down && h.down(pt(e)); });
+  c.addEventListener('pointermove', e => on && h.move && h.move(pt(e)));
+  const end = e => { if (on) { on = false; h.up && h.up(pt(e)); } };
+  c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+  return g;
+}
+function rr(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+function circ(g, x, y, r, fill, stroke, lw = 6) { g.beginPath(); g.arc(x, y, r, 0, TAU); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); } }
+function txt(g, s, x, y, size = 40, color = '#33414f') { g.font = size + 'px ' + FONT; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = color; g.fillText(s, x, y); }
+function pill(g, s, x, y, size = 36, bg = '#fff1c2', fg = '#a36000') {
+  g.font = size + 'px ' + FONT; const w = g.measureText(s).width + size * 1.3, h = size * 1.75;
+  rr(g, x - w / 2, y - h / 2, w, h, h / 2); g.fillStyle = bg; g.fill(); g.strokeStyle = 'rgba(0,0,0,.08)'; g.lineWidth = 3; g.stroke(); txt(g, s, x, y + 2, size, fg);
+}
+function fxAt(g, x, y) { const r = g.canvas.getBoundingClientRect(); sparkle(r.left + x * r.width / W, r.top + y * r.height / H); }
+function bg(g, floor = '#fff1c2') { g.globalAlpha = 1; g.fillStyle = '#e3f4fd'; g.fillRect(0, 0, W, H); g.fillStyle = floor; g.fillRect(0, 790, W, 110); }
+// 계면활성제 캐릭터: 파란 머리(물과 친함) + 노란 꼬리(기름과 친함). 꼬리는 ang 방향(0 = 아래)
+function surf(g, x, y, ang, s, face) {
+  g.save(); g.translate(x, y); g.rotate(ang); g.scale(s, s);
+  g.strokeStyle = '#f2b90c'; g.lineWidth = 16; g.lineCap = 'round'; g.beginPath(); g.moveTo(0, 24);
+  g.bezierCurveTo(26, 60, -26, 85, 0, 115); g.bezierCurveTo(26, 145, -26, 170, 0, 200); g.stroke();
+  circ(g, 0, 0, 36, '#3a9ae0', '#2476b8', 5);
+  if (face) {
+    g.rotate(-ang); circ(g, -12, -5, 5, '#fff'); circ(g, 12, -5, 5, '#fff'); circ(g, -11, -4, 2.4, '#33414f'); circ(g, 13, -4, 2.4, '#33414f');
+    g.strokeStyle = '#fff'; g.lineWidth = 3.5; g.beginPath(); g.arc(0, 6, 10, .2, Math.PI - .2); g.stroke();
+  }
+  g.restore();
+}
+const acts = []; let lastT = performance.now();
+(function loop(now) {
+  const dt = Math.min(.05, Math.max(0, (now - lastT) / 1000)); lastT = now;
+  const i = panels.findIndex(p => p.classList.contains('on')); acts[i] && acts[i](dt, now / 1000);
+  requestAnimationFrame(loop);
+})(lastT);
+
+/* =========== 1. 물과 기름 섞기 =========== */
+(() => {
+  const GX = 800, TOP = 240, BOT = 800, HW = 220, WL = 430, home = { x: 1330, y: 500 }, bt = { ...home };
+  let st = 'pour', oil = 0, m = 0, energy = 0, off = 0, mixed = false, rest = 0, press = false, grab = null, lastX = 0, tilt = 0;
+  const drops = Array.from({ length: 48 }, () => ({ x: rand(-185, 185), y: rand(480, 770), r: rand(9, 24), ph: rand(0, 6) }));
+  const g = stage('#v1', {
+    down(p) {
+      if (st === 'pour') { if (Math.abs(p.x - bt.x) < 120 && Math.abs(p.y - bt.y) < 200) grab = { dx: p.x - bt.x, dy: p.y - bt.y }; }
+      else if (Math.abs(p.x - GX) < 330 && p.y > 180) { press = true; lastX = p.x; }
+    },
+    move(p) {
+      if (grab) { bt.x = clamp(p.x - grab.dx, 120, 1480); bt.y = clamp(p.y - grab.dy, 150, 760); }
+      else if (press) {
+        const dx = p.x - lastX; lastX = p.x; off = clamp(off + dx, -80, 80); energy += Math.abs(dx); m = Math.min(1, m + Math.abs(dx) / 2600); rest = 0;
+        if (energy > 240) { energy = 0; sfx.slosh(); }
+        if (m > .75 && !mixed) { mixed = true; coach('#b1', '우아, 섞인 것 같지요?<br>이제 <b>손을 떼고</b> 가만히 지켜보세요!'); }
+      }
+    },
+    up() { grab = null; press = false; }
+  });
+  acts[0] = (dt, t) => {
+    const pouring = st === 'pour' && grab && bt.x > 740 && bt.x < 1160 && bt.y < 300;
+    tilt = lerp(tilt, pouring ? -1.9 : 0, near(dt));
+    if (pouring && tilt < -1.4) {
+      oil = Math.min(1, oil + dt / 2.2);
+      if (oil >= 1) { st = 'shake'; grab = null; sfx.good(); fxAt(g, GX, WL - 60); coach('#b1', '노란 기름이 물 <b>위에 둥둥</b> 떴어요!<br>컵을 손가락으로 <b>좌우로 쓱쓱</b> 흔들어 섞어 볼까요?'); }
+    }
+    if (!grab) { bt.x = lerp(bt.x, home.x, near(dt)); bt.y = lerp(bt.y, home.y, near(dt)); }
+    if (!press) {
+      off = lerp(off, 0, near(dt)); rest += dt;
+      if (rest > .5 && m > 0) { m = Math.max(0, m - dt / 5); if (!m && mixed) { mixed = false; coach('#b1', '기름 방울이 다시 위로 올라가 <b>두 층</b>이 됐어요!<br>또 흔들어 봐도 좋아요.'); finish(0, '#c1'); } }
+    }
+    // 그리기
+    bg(g);
+    const cx0 = GX + off, x0 = cx0 - HW, x1 = cx0 + HW, thick = 120 * oil * (1 - ease.io(m));
+    const cup = () => { g.beginPath(); g.moveTo(x0, TOP); g.lineTo(x0, BOT - 40); g.arcTo(x0, BOT, x0 + 40, BOT, 40); g.lineTo(x1 - 40, BOT); g.arcTo(x1, BOT, x1, BOT - 40, 40); g.lineTo(x1, TOP); };
+    g.save(); cup(); g.closePath(); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill(); g.clip();
+    g.fillStyle = '#9fd4f5'; g.fillRect(x0, WL, HW * 2, BOT - WL);
+    g.fillStyle = `rgba(255,226,120,${.3 * m})`; g.fillRect(x0, WL, HW * 2, BOT - WL);
+    g.fillStyle = '#ffd23f'; g.fillRect(x0, WL - thick, HW * 2, thick + 1);
+    if (m > .02) for (const d of drops) {
+      const y = lerp(WL - thick / 2, d.y, ease.out(m)) + Math.sin(t * 3 + d.ph) * 5, r = d.r * Math.min(1, m * 2.5);
+      circ(g, cx0 + d.x, y, r, '#ffd23f', '#f2b90c', 3); circ(g, cx0 + d.x - r * .3, y - r * .3, r * .22, '#fff8d0');
+    }
+    g.restore();
+    g.strokeStyle = '#7fb9de'; g.lineWidth = 10; g.lineCap = 'round'; cup(); g.stroke();
+    if (oil > .5 && m < .05) { pill(g, '기름', x1 + 95, WL - thick / 2, 34, '#fff1c2', '#8a6a00'); pill(g, '물', x1 + 80, 620, 34, '#fff', '#2476b8'); }
+    if (st === 'pour') {
+      g.setLineDash([16, 14]); circ(g, 960, 200, 80, null, grab ? '#3a9ae0' : '#9bbcd3', 6); g.setLineDash([]);
+      if (!grab) pill(g, '기름병을 끌어와요', 960, 90 + Math.sin(t * 5) * 6, 34);
+    } else if (!m && !press) pill(g, '← 컵을 쓱쓱 흔들어요 →', GX, 150 + Math.sin(t * 5) * 6, 36);
+    // 식용유 병
+    if (pouring && tilt < -1.4) { const sx = bt.x + 165 * Math.sin(tilt), sy = bt.y - 165 * Math.cos(tilt); g.strokeStyle = '#ffd23f'; g.lineWidth = 18; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx, WL - thick + 6); g.stroke(); if (Math.random() < .08) sfx.drip(); }
+    g.save(); g.translate(bt.x, bt.y); g.rotate(tilt);
+    g.fillStyle = '#fff6cf'; g.fillRect(-24, -134, 48, 50);
+    rr(g, -62, -92, 124, 236, 28); g.fillStyle = '#fff6cf'; g.fill();
+    g.save(); g.clip(); g.fillStyle = '#ffd23f'; g.fillRect(-62, -92 + 236 * oil * .8, 124, 236); g.restore();
+    rr(g, -62, -92, 124, 236, 28); g.strokeStyle = '#e0b52e'; g.lineWidth = 6; g.stroke();
+    rr(g, -32, -166, 64, 36, 10); g.fillStyle = '#ff8a7a'; g.fill();
+    rr(g, -46, -10, 92, 64, 12); g.fillStyle = '#fff'; g.fill(); txt(g, '식용유', 0, 24, 27, '#8a6a00');
+    g.restore();
+  };
+})();
+
+/* =========== 2. 계면활성제 만나기 =========== */
+(() => {
+  const BIG = { x: 270, y: 180 }, seen = { h: false, t: false };
+  let phase = 0, placed = 0, grab = null;
+  const pcs = Array.from({ length: 6 }, (_, i) => ({ hx: 140 + i * 104, hy: 715, x: 140 + i * 104, y: 715, a: 0, done: false }));
+  const check = () => { if (seen.h && seen.t && !phase) { phase = 1; sfx.good(); coach('#b2', '머리는 <b>물</b>과, 꼬리는 <b>기름</b>과 친해요!<br>아래의 작은 친구들을 <b>컵 안으로</b> 끌어다 놓아 보세요.'); } };
+  const g = stage('#v2', {
+    down(p) {
+      if (Math.hypot(p.x - BIG.x, p.y - BIG.y) < 95) { if (!seen.h) fxAt(g, BIG.x, BIG.y); seen.h = true; sfx.pop(); check(); }
+      else if (Math.abs(p.x - BIG.x) < 70 && p.y > BIG.y + 70 && p.y < BIG.y + 420) { if (!seen.t) fxAt(g, BIG.x, BIG.y + 230); seen.t = true; sfx.pop(); check(); }
+      else if (phase) { const c = pcs.find(c => !c.done && Math.abs(p.x - c.x) < 52 && p.y > c.y - 55 && p.y < c.y + 135); if (c) grab = { c, dx: p.x - c.x, dy: p.y - c.y }; }
+    },
+    move(p) { if (grab) { grab.c.x = p.x - grab.dx; grab.c.y = p.y - grab.dy; } },
+    up() {
+      if (!grab) return; const c = grab.c; grab = null;
+      if (c.x > 860 && c.x < 1500 && c.y > 120 && c.y < 820) {
+        c.done = true; c.tx = 955 + placed * 90; c.ty = 470; placed++; sfx.pop(); fxAt(g, c.tx, 440);
+        if (placed === 6) { coach('#b2', '머리는 <b>물 쪽</b>, 꼬리는 <b>기름 쪽</b>으로 줄을 섰어요!<br>물과 기름 사이에서 손을 잡아 주는 거예요.'); setTimeout(() => finish(1, '#c2'), 800); }
+      }
+    }
+  });
+  acts[1] = (dt, t) => {
+    bg(g);
+    // 컵: 위는 기름, 아래는 물
+    const X0 = 880, X1 = 1480, cup = () => { g.beginPath(); g.moveTo(X0, 180); g.lineTo(X0, 760); g.arcTo(X0, 800, X0 + 40, 800, 40); g.lineTo(X1 - 40, 800); g.arcTo(X1, 800, X1, 760, 40); g.lineTo(X1, 180); };
+    g.save(); cup(); g.closePath(); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill(); g.clip();
+    g.fillStyle = '#ffe07a'; g.fillRect(X0, 260, 600, 180); g.fillStyle = '#9fd4f5'; g.fillRect(X0, 440, 600, 360); g.restore();
+    g.strokeStyle = '#7fb9de'; g.lineWidth = 10; g.lineCap = 'round'; cup(); g.stroke();
+    txt(g, '기름', 1180, 300, 44, '#8a6a00'); txt(g, '물', 1180, 690, 48, '#2476b8');
+    // 큰 계면활성제
+    surf(g, BIG.x, BIG.y + Math.sin(t * 2) * 5, 0, 1.9, true);
+    if (seen.h) pill(g, '물과 친한 머리', 560, 180, 38, '#d6f0ff', '#2476b8'); else pill(g, '머리를 톡!', 500, 180 + Math.sin(t * 5) * 6, 34);
+    if (seen.t) pill(g, '기름과 친한 꼬리', 570, 400, 38, '#fff1c2', '#8a6a00'); else pill(g, '꼬리를 톡!', 500, 400 + Math.sin(t * 5 + 1) * 6, 34);
+    // 작은 친구들
+    if (phase) {
+      rr(g, 70, 650, 640, 205, 36); g.fillStyle = 'rgba(255,255,255,.7)'; g.fill();
+      if (placed < 6 && !grab) pill(g, '컵으로 끌어요 →', 560, 610 + Math.sin(t * 5) * 6, 32);
+      for (const c of pcs) {
+        if (c.done) { c.x = lerp(c.x, c.tx, near(dt)); c.y = lerp(c.y, c.ty, near(dt)); c.a = lerp(c.a, Math.PI, near(dt)); }
+        else if (!grab || grab.c !== c) { c.x = lerp(c.x, c.hx, near(dt)); c.y = lerp(c.y, c.hy, near(dt)); }
+        surf(g, c.x, c.y, c.a, .55, true);
+      }
+    }
+  };
+})();
+
+/* =========== 3. 기름때 씻기 =========== */
+(() => {
+  const HOME = { x: 1330, y: 640 }, btn = $('#w3');
+  let st, p, rub, sec, wt, water, foam, soap, grab, last, spots;
+  const reset = () => {
+    st = 'idle'; p = rub = sec = wt = 0; water = []; foam = []; soap = { ...HOME }; grab = false; last = null;
+    spots = [[730, 545, 32], [872, 505, 28], [800, 650, 30], [749, 320, 24], [833, 290, 25]].map(([x, y, r]) => ({ x, y, r, oy: 0 }));
+    btn.textContent = '물로만 씻기'; btn.disabled = false; btn.classList.add('pulse');
+  };
+  reset();
+  btn.onclick = () => {
+    if (st === 'done') { reset(); coach('#b3', '다시 기름때가 묻었어요! 먼저 <b>물로만</b> 씻어 볼까요?'); return; }
+    if (st !== 'idle') return;
+    st = 'water'; wt = 0; btn.disabled = true; btn.classList.remove('pulse'); sfx.whoosh();
+  };
+  const onHand = q => q.x > 590 && q.x < 1010 && q.y > 170 && q.y < 770;
+  const g = stage('#v3', {
+    down(q) { if (st === 'soap' && Math.abs(q.x - soap.x) < 130 && Math.abs(q.y - soap.y) < 100) { grab = true; last = null; } },
+    move(q) {
+      if (!grab) return; soap.x = q.x; soap.y = q.y;
+      if (onHand(q)) {
+        if (last) {
+          rub += Math.hypot(q.x - last.x, q.y - last.y); p = Math.min(1, rub / 9000);
+          const s = Math.floor(p * 30); if (s !== sec) { sec = s; sfx.tick(); }
+          if (Math.random() < .5) foam.push({ x: q.x + rand(-70, 70), y: q.y + rand(-50, 50), r: rand(8, 22), oy: 0 });
+          if (foam.length > 70) foam.shift();
+          if (p >= 1) { grab = false; st = 'rinse'; wt = 0; sfx.good(); coach('#b3', '<b>30초</b> 동안 잘 문질렀어요! 작은 계면활성제들이 기름때를 <b>동글동글</b> 감쌌어요.<br>이제 물로 헹궈요!'); }
+        }
+        last = q;
+      } else last = null;
+    },
+    up() { grab = false; last = null; }
+  });
+  function hand() {
+    const parts = () => {
+      rr(g, 712, 680, 176, 240, 20); g.fill(); rr(g, 620, 430, 360, 300, 100); g.fill();
+      [[628, 280], [712, 200], [796, 185], [880, 250]].forEach(([x, y]) => { rr(g, x, y, 74, 520 - y, 37); g.fill(); });
+      g.save(); g.translate(640, 570); g.rotate(-.75); rr(g, -160, -42, 180, 84, 42); g.fill(); g.restore();
+    };
+    // 테두리 색으로 살짝 밀어 여러 번 찍고, 그 위에 살색을 한 번 → 겹친 부분에 안쪽 선이 안 생김
+    g.save(); g.fillStyle = '#e8ac84';
+    for (const [dx, dy] of [[-7, 0], [7, 0], [0, -7], [0, 7], [-5, -5], [5, -5], [-5, 5], [5, 5]]) { g.save(); g.translate(dx, dy); parts(); g.restore(); }
+    g.fillStyle = '#ffd9b8'; parts(); g.restore();
+  }
+  acts[2] = (dt, t) => {
+    if (st === 'water' || st === 'rinse') {
+      wt += dt; for (let i = 0; i < 7; i++) water.push({ x: rand(640, 960), y: 120, v: rand(520, 820), r: rand(7, 14) });
+      if (st === 'water' && wt > 2.8) { st = 'soap'; coach('#b3', '어? 물은 주르륵 흘러내리는데 <b>기름때는 그대로</b>예요.<br><b>비누</b>를 손으로 끌어와서 <b>쓱쓱</b> 문질러 보세요!'); }
+      if (st === 'rinse') {
+        if (wt > .5) { spots.forEach(s => s.oy += dt * 330); foam.forEach(f => f.oy += dt * 380); }
+        if (wt > 3.2) { st = 'done'; foam = []; btn.textContent = '다시 하기'; btn.disabled = false; fxAt(g, 800, 480); finish(2, '#c3'); }
+      }
+    }
+    water.forEach(w => w.y += w.v * dt); water = water.filter(w => w.y < 920);
+    if (!grab) { soap.x = lerp(soap.x, HOME.x, near(dt)); soap.y = lerp(soap.y, HOME.y, near(dt)); }
+    bg(g, '#c9f0df');
+    // 수도꼭지
+    rr(g, 730, -20, 140, 100, 24); g.fillStyle = '#b9c6d2'; g.fill(); rr(g, 765, 70, 70, 44, 10); g.fillStyle = '#93a3b3'; g.fill();
+    hand();
+    // 기름때 + 감싸는 계면활성제
+    if (st !== 'done') for (const s of spots) {
+      const y = s.y + s.oy; if (y > 940) continue;
+      const k = 1 - .3 * p, rx = s.r * (1.35 - .35 * p) * k, ry = s.r * (.8 + .2 * p) * k;
+      g.beginPath(); g.ellipse(s.x, y, rx, ry, .3 * (1 - p), 0, TAU); g.fillStyle = '#7a4a22'; g.fill();
+      circ(g, s.x - rx * .3, y - ry * .3, ry * .2, '#a87648');
+      for (let i = 0; i < 10; i++) {
+        const thr = i / 10 * .75; if (p <= thr) continue;
+        const a = i / 10 * TAU + s.x, q = Math.min(1, (p - thr) * 5), d = s.r * k + 12 + (1 - q) * 70, hx = s.x + Math.cos(a) * d, hy = y + Math.sin(a) * d;
+        g.globalAlpha = q; g.strokeStyle = '#f2b90c'; g.lineWidth = 5; g.lineCap = 'round'; g.beginPath(); g.moveTo(hx, hy); g.lineTo(hx - Math.cos(a) * 20, hy - Math.sin(a) * 20); g.stroke();
+        circ(g, hx, hy, 8, '#3a9ae0'); g.globalAlpha = 1;
+      }
+    }
+    for (const f of foam) circ(g, f.x, f.y + f.oy, f.r, 'rgba(255,255,255,.8)', '#bfe4fb', 3);
+    for (const w of water) { g.globalAlpha = .75; circ(g, w.x, w.y, w.r, '#7cc4ee'); g.globalAlpha = 1; }
+    // 문지른 시간
+    if (st === 'soap' || st === 'rinse') {
+      rr(g, 60, 60, 440, 54, 27); g.fillStyle = '#fff'; g.fill();
+      if (p > 0) { rr(g, 60, 60, Math.max(54, 440 * p), 54, 27); g.fillStyle = '#7fd6b0'; g.fill(); }
+      rr(g, 60, 60, 440, 54, 27); g.strokeStyle = '#3fae80'; g.lineWidth = 5; g.stroke();
+      txt(g, `문지른 시간 ${sec}초`, 280, 160, 44, '#1f6b4b'); txt(g, '30초까지 문질러요', 280, 215, 30, '#6c7a8a');
+    }
+    // 비누
+    g.save(); g.translate(soap.x, soap.y); g.rotate(grab ? Math.sin(t * 20) * .08 : 0);
+    rr(g, -90, -52, 180, 104, 34); g.fillStyle = '#fff'; g.fill(); g.strokeStyle = '#7fd6b0'; g.lineWidth = 8; g.stroke(); txt(g, '비누', 0, 4, 40, '#3fae80'); g.restore();
+    if (st === 'soap' && !grab && !p) pill(g, '비누를 손으로 끌어와요', 1290, 530 + Math.sin(t * 5) * 6, 32);
+  };
+})();
+
+/* =========== 4. 도망가는 후추 =========== */
+(() => {
+  const C = { x: 700, y: 450 }, REST = { x: 1300, y: 330 }, DISH = { x: 1340, y: 650 }, tip = { ...REST }, btn = $('#n4');
+  const LABEL = ['그냥 면봉을 물에 대기', '면봉에 세제 묻히기', '세제 면봉을 물에 대기', '다시 하기'];
+  let fl, step = 0, busy = false, soapy = false, rip = -1;
+  const reset = () => fl = Array.from({ length: 200 }, () => { const r = Math.sqrt(Math.random()) * 300; return { a: rand(0, TAU), r, r0: r, tr: rand(306, 332), s: rand(4, 9), rot: rand(0, 3) }; });
+  reset();
+  const go = (to, done) => { const f = { ...tip }; tween(650, t => { const e = ease.io(t); tip.x = lerp(f.x, to.x, e); tip.y = lerp(f.y, to.y, e); }, done); };
+  btn.onclick = () => {
+    if (busy) return; busy = true; btn.disabled = true; btn.classList.remove('pulse');
+    const fin = () => { busy = false; btn.disabled = false; btn.textContent = LABEL[step]; };
+    if (step === 0) go(C, () => { sfx.pop(); rip = 0; coach('#b4', '어? <b>아무 일도 일어나지 않아요.</b><br>이번에는 면봉에 <b>주방 세제</b>를 콕 묻혀 볼까요?'); setTimeout(() => go(REST, () => { step = 1; fin(); }), 1200); });
+    else if (step === 1) go(DISH, () => { soapy = true; sfx.drip(); setTimeout(() => go(REST, () => { step = 2; coach('#b4', '면봉 끝에 초록색 <b>세제</b>가 묻었어요.<br>이제 물 가운데에 살짝 대 보세요!'); fin(); }), 600); });
+    else if (step === 2) go(C, () => {
+      sfx.whoosh(); rip = 0; tween(650, t => { const e = ease.out(t); fl.forEach(f => f.r = lerp(f.r0, f.tr, e)); });
+      setTimeout(() => { coach('#b4', '우아! 후추가 <b>바깥쪽으로 휙</b> 도망갔어요!'); finish(3, '#c4'); go(REST, () => { step = 3; fin(); }); }, 1000);
+    });
+    else { reset(); soapy = false; step = 0; coach('#b4', '후추를 다시 뿌렸어요. <b>그냥 면봉</b>부터 대 볼까요?'); fin(); }
+  };
+  const g = stage('#v4', { down() { btn.click(); } });
+  acts[3] = (dt, t) => {
+    g.globalAlpha = 1; g.fillStyle = '#fff1c2'; g.fillRect(0, 0, W, H);
+    circ(g, C.x, C.y + 10, 392, 'rgba(0,0,0,.06)'); circ(g, C.x, C.y, 385, '#fff', '#d9e6ef', 8); circ(g, C.x, C.y, 345, '#bfe4fb', '#9fd4f5', 6);
+    if (rip >= 0) { g.globalAlpha = 1 - rip; circ(g, C.x, C.y, 30 + rip * (soapy ? 300 : 70), null, '#fff', 8); g.globalAlpha = 1; rip += dt * 1.3; if (rip > 1) rip = -1; }
+    g.fillStyle = '#3b3027';
+    for (const f of fl) { g.save(); g.translate(C.x + Math.cos(f.a) * f.r, C.y + Math.sin(f.a) * f.r); g.rotate(f.rot); g.fillRect(-f.s, -f.s * .55, f.s * 2, f.s * 1.1); g.restore(); }
+    // 세제 접시
+    circ(g, DISH.x, DISH.y, 100, '#fff', '#d9e6ef', 8); circ(g, DISH.x, DISH.y, 62, '#8fe0a0'); circ(g, DISH.x - 20, DISH.y - 20, 12, '#c9f5d0'); pill(g, '주방 세제', DISH.x, DISH.y + 150, 34, '#c9f0df', '#1f6b4b');
+    // 면봉
+    g.strokeStyle = '#f0e2c0'; g.lineWidth = 16; g.lineCap = 'round'; g.beginPath(); g.moveTo(tip.x, tip.y); g.lineTo(tip.x + 190, tip.y - 230); g.stroke();
+    g.save(); g.translate(tip.x, tip.y); g.rotate(.69); g.beginPath(); g.ellipse(0, 0, 26, 38, 0, 0, TAU); g.fillStyle = soapy ? '#8fe0a0' : '#fff'; g.fill(); g.strokeStyle = soapy ? '#3fae80' : '#cfd8df'; g.lineWidth = 5; g.stroke(); g.restore();
+    if (!busy) pill(g, soapy ? '세제 묻힌 면봉' : '그냥 면봉', 1330, 60, 34, '#fff', '#33414f');
+  };
+})();
+
+/* =========== 5. 우유 마블링 =========== */
+(() => {
+  const C = { x: 800, y: 450 }, R = 380, COL = { r: '#ff4d6d', b: '#3a8fe8', y: '#ffcf33' };
+  let tool = 'r', ps = [], frozen = false, touched = false, flash = 0, n = 0, swab = null, lastP = null, sgn = 1;
+  const tools = $$('#tools5 .tool');
+  tools.forEach(b => b.onclick = () => { tool = b.dataset.t; tools.forEach(x => x.classList.toggle('on', x === b)); sfx.pop(); });
+  const inP = q => Math.hypot(q.x - C.x, q.y - C.y) < R - 12;
+  function drop(q) {
+    for (let i = 0; i < 240; i++) { const a = rand(0, TAU), d = Math.sqrt(Math.random()) * 36; ps.push({ x: q.x + Math.cos(a) * d, y: q.y + Math.sin(a) * d, vx: Math.cos(a) * d * 1.5, vy: Math.sin(a) * d * 1.5, e: 0, c: COL[tool] }); }
+    if (ps.length > 3600) ps.splice(0, ps.length - 3600); // ponytail: 점 3600개까지만, 태블릿에서 느리면 수를 줄이기
+    sfx.drip();
+    if (++n === 3 && !touched) coach('#b5', '예쁜 물감이 떨어졌어요! 이제 <b>세제 면봉</b>을 고르고<br>색깔 위를 톡 눌러 보세요.');
+  }
+  function touch(q, k) {
+    for (const o of ps) {
+      const dx = o.x - q.x, dy = o.y - q.y, d = Math.hypot(dx, dy) + 1, v = k * 900 * Math.exp(-d / 140), ux = dx / d, uy = dy / d;
+      o.vx += ux * v - uy * v * 1.3 * sgn; o.vy += uy * v + ux * v * 1.3 * sgn; o.e = Math.max(o.e, k * Math.exp(-d / 420));
+    }
+  }
+  const g = stage('#v5', {
+    down(q) {
+      if (frozen || !inP(q)) return;
+      if (tool !== 's') return drop(q);
+      if (!ps.length) return coach('#b5', '먼저 <b>빨강, 파랑, 노랑</b> 물감을 우유에 떨어뜨려 주세요!');
+      swab = lastP = q; sgn = Math.random() < .5 ? -1 : 1; touch(q, 1); sfx.whoosh();
+      if (!touched) { touched = true; coach('#b5', '우아! 색깔이 <b>빙글빙글</b> 퍼져요! 물감을 더 떨어뜨리고 또 눌러서<br>나만의 무늬를 만들고, <b>사진 찍기</b>를 눌러요.'); }
+    },
+    move(q) { if (swab && !frozen && inP(q)) { swab = q; if (Math.hypot(q.x - lastP.x, q.y - lastP.y) > 30) { touch(q, .3); lastP = q; } } },
+    up() { swab = null; }
+  });
+  $('#shot5').onclick = () => {
+    if (frozen) return;
+    if (!touched) return coach('#b5', '아직이에요! 물감을 떨어뜨리고 <b>세제 면봉</b>을 먼저 대 보세요.');
+    frozen = true; flash = 1; swab = null; sfx.snap(); finish(4, '#c5');
+  };
+  $('#new5').onclick = () => { ps = []; frozen = touched = false; n = 0; sfx.pop(); coach('#b5', '새 우유 접시예요! 색깔을 고르고 우유를 톡톡 눌러 보세요.'); };
+  acts[4] = (dt, t) => {
+    if (!frozen) {
+      const damp = Math.exp(-1.8 * dt), ed = Math.exp(-.45 * dt);
+      for (const o of ps) {
+        if (o.e > .01) { const A = Math.sin(o.x * .011 + t * .3) * 2 + Math.cos(o.y * .013 - t * .2) * 2 + Math.sin((o.x + o.y) * .007) * 2; o.vx += Math.cos(A) * 260 * o.e * dt; o.vy += Math.sin(A) * 260 * o.e * dt; o.e *= ed; }
+        o.x += o.vx * dt; o.y += o.vy * dt; o.vx *= damp; o.vy *= damp;
+        const dx = o.x - C.x, dy = o.y - C.y, d = Math.hypot(dx, dy);
+        if (d > R - 16) { const ux = dx / d, uy = dy / d, vn = o.vx * ux + o.vy * uy; o.x = C.x + ux * (R - 16); o.y = C.y + uy * (R - 16); if (vn > 0) { o.vx -= vn * ux; o.vy -= vn * uy; } }
+      }
+    }
+    g.globalAlpha = 1; g.fillStyle = '#c9f0df'; g.fillRect(0, 0, W, H);
+    circ(g, C.x, C.y + 12, R + 48, 'rgba(0,0,0,.07)'); circ(g, C.x, C.y, R + 42, '#fff', '#d9e6ef', 8); circ(g, C.x, C.y, R, '#fffdf4', '#f1ead6', 5);
+    g.globalAlpha = .5; for (const o of ps) { g.fillStyle = o.c; g.beginPath(); g.arc(o.x, o.y, 8, 0, TAU); g.fill(); } g.globalAlpha = 1;
+    if (!ps.length) pill(g, '우유를 톡톡 눌러요', C.x, C.y + Math.sin(t * 5) * 6, 38);
+    if (swab) { g.strokeStyle = '#f0e2c0'; g.lineWidth = 16; g.lineCap = 'round'; g.beginPath(); g.moveTo(swab.x, swab.y); g.lineTo(swab.x + 170, swab.y - 210); g.stroke(); circ(g, swab.x, swab.y, 26, '#8fe0a0', '#3fae80', 5); }
+    if (frozen) pill(g, '찰칵! 사진을 찍었어요', C.x, 60, 38, '#fff', '#33414f');
+    if (flash > 0) { g.fillStyle = `rgba(255,255,255,${flash})`; g.fillRect(0, 0, W, H); flash -= dt * 2; }
+  };
+})();
+
+/* =========== 6. 계면활성제 퀴즈 =========== */
+(() => {
+  const Q = [
+    { q: '물과 기름을 함께 넣으면 어떻게 될까요?', o: ['잘 섞여서 하나가 돼요', '섞이지 않고 두 층이 돼요', '둘 다 사라져요'], a: 1, why: '맞아요! 물과 기름은 섞이지 않아서 기름이 물 위에 떠요.' },
+    { q: '물과도 기름과도 친해서 기름때를 씻어 내는 물질은 무엇일까요?', o: ['소금', '설탕', '계면활성제'], a: 2, why: '맞아요! 계면활성제는 머리는 물과, 꼬리는 기름과 친해요.' },
+    { q: '세제 묻힌 면봉을 대면 후추는 어디로 갈까요?', o: ['바깥쪽으로 가요', '가운데로 모여요', '그대로 있어요'], a: 0, why: '맞아요! 후추가 그릇 바깥쪽으로 휙 도망가요.' }
+  ];
+  const box = $('#quiz'); let solved = 0;
+  box.innerHTML = Q.map((x, i) => `<div class="qbox" data-i="${i}"><h3><span class="qn">${i + 1}</span>${x.q}</h3>
+    <div class="opts">${x.o.map((o, j) => `<button class="opt" data-j="${j}">${o}</button>`).join('')}</div><div class="qfb"></div></div>`).join('');
+  $$('.qbox').forEach(qb => {
+    const x = Q[qb.dataset.i], fb = qb.querySelector('.qfb');
+    qb.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if (qb.classList.contains('solved')) return;
+      if (+b.dataset.j === x.a) {
+        b.classList.add('right'); qb.classList.add('solved'); fb.className = 'qfb good'; fb.textContent = x.why;
+        sfx.good(); sparkleAt(b); solved++;
+        if (solved === Q.length) { coach('#b6', '세 문제 모두 맞혔어요! 정말 멋져요!'); finish(5, '#c6'); }
+      } else {
+        b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); sfx.bad();
+        fb.className = 'qfb'; fb.textContent = '괜찮아요! 다시 한번 골라 볼까요?';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
